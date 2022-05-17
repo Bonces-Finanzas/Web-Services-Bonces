@@ -12,7 +12,7 @@ public class WebServicesBoncesApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebServicesBoncesApplication.class, args);
     }
-
+// ;.;
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
