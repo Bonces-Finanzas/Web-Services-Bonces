@@ -1,6 +1,8 @@
 package com.bonces.webservicesbonces.quota.domain.model.entity;
 
+import com.bonces.webservicesbonces.schedule.domain.model.entity.Schedule;
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -67,4 +69,13 @@ public class Quota extends AuditModel {
 
     @NotNull
     private Double convexityFactor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "schedule_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
+    @JsonIgnore
+    private Schedule schedule;
 }

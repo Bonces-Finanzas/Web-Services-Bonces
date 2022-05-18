@@ -1,12 +1,15 @@
 package com.bonces.webservicesbonces.schedule.domain.model.entity;
 
+import com.bonces.webservicesbonces.quota.domain.model.entity.Quota;
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
 import com.bonces.webservicesbonces.users.domain.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +35,13 @@ public class Schedule extends AuditModel {
     )
     @JsonIgnore
     private User user;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(
+            targetEntity = Quota.class,
+            mappedBy = "schedule",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private Set<Quota> quotas;
 }
