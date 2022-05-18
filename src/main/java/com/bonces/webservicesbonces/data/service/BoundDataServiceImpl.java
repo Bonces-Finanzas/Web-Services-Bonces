@@ -1,4 +1,4 @@
 package com.bonces.webservicesbonces.data.service;
 
-public class BoundDataService {
+public class BoundDataServiceImpl {
 }

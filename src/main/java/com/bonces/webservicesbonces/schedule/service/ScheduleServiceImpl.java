@@ -1,4 +1,4 @@
 package com.bonces.webservicesbonces.schedule.service;
 
-public class ScheduleService {
+public class ScheduleServiceImpl {
 }

@@ -1,4 +1,4 @@
 package com.bonces.webservicesbonces.results.service;
 
-public class ResultsService {
+public class ResultsOfDecisionRatioServiceImpl {
 }
