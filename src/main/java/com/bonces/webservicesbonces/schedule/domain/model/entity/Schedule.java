@@ -1,6 +1,8 @@
 package com.bonces.webservicesbonces.schedule.domain.model.entity;
 
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
+import com.bonces.webservicesbonces.users.domain.model.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,4 +23,13 @@ public class Schedule extends AuditModel {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
+    @JsonIgnore
+    private User user;
 }
