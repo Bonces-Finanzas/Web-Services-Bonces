@@ -15,9 +15,9 @@ import java.util.Date;
 @Setter
 @With
 @Entity
-@Table(name = "bound_data")
+@Table(name = "boundData")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class BoundData extends AuditModel{
+public class BoundData extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,6 +61,12 @@ public class BoundData extends AuditModel{
     @NotNull
     private String termType;
 
-    @NotNull
-    private Double timeline;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "schedule_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
+    @JsonIgnore
+    private Schedule schedule;
 }

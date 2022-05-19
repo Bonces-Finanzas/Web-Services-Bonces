@@ -1,5 +1,6 @@
 package com.bonces.webservicesbonces.schedule.domain.model.entity;
 
+import com.bonces.webservicesbonces.data.domain.model.entity.BoundData;
 import com.bonces.webservicesbonces.quota.domain.model.entity.Quota;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfCurrentPriceAndProfit;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfDecisionRatio;
@@ -62,4 +63,12 @@ public class Schedule extends AuditModel {
             orphanRemoval = true
     )
     private ResultsOfDecisionRatio resultsOfDecisionRatio;
+
+    @OneToOne(
+            targetEntity = BoundData.class,
+            mappedBy = "schedule",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private BoundData boundData;
 }
