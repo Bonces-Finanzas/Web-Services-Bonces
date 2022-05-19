@@ -33,7 +33,7 @@ public class ResultsOfDecisionRatio extends AuditModel {
     @NotNull
     private Double modifiedDuration;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "schedule_id",
             referencedColumnName = "id",
