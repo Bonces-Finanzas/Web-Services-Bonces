@@ -54,7 +54,7 @@ public class StructuringResults  extends AuditModel {
     private long InitialCostsEmitter;
 
     @NotNull
-    private long InitialCostsBondHolder;
+    private long InitialCostsBondholder;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
