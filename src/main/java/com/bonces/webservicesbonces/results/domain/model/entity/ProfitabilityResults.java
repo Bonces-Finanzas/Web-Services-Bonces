@@ -8,9 +8,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-
-
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -36,10 +33,8 @@ public class ProfitabilityResults extends AuditModel {
     @NotNull
     private double emitterTirTcea;
 
-
     @NotNull
     private double emitterTirTceaWithShield;
-
 
     @NotNull
     private double bondholderTirTrea;

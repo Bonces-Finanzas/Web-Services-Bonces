@@ -8,9 +8,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-
-
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -33,28 +30,23 @@ public class StructuringResults  extends AuditModel {
     @NotNull
     private long periodsPerYear;
 
-
     @NotNull
     private long totalNumberOfPeriods;
-
 
     @NotNull
     private double effectiveAnnualRate;
 
-
     @NotNull
     private double effectiveRate;
-
 
     @NotNull
     private double COK;
 
+    @NotNull
+    private double initialCostsEmitter;
 
     @NotNull
-    private double InitialCostsEmitter;
-
-    @NotNull
-    private double InitialCostsBondholder;
+    private double initialCostsBondholder;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
