@@ -25,25 +25,24 @@ public class ProfitabilityResults extends AuditModel {
     private Long id;
 
     @NotNull
-    private long emitterTcea;
+    private double emitterTcea;
 
     @NotNull
-    private long emmiterTceaWithShield;
+    private double emitterTceaWithShield;
 
     @NotNull
-    private long bondholderTrea ;
-
-
-    @NotNull
-    private long emitterTirTcea;
-
+    private double bondholderTrea ;
 
     @NotNull
-    private long emmiterTirTceaWithShield;
+    private double emitterTirTcea;
 
 
     @NotNull
-    private long BondholderTirTrea;
+    private double emitterTirTceaWithShield;
+
+
+    @NotNull
+    private double bondholderTirTrea;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(

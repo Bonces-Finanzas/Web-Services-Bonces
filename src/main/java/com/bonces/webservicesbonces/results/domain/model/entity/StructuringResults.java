@@ -39,22 +39,22 @@ public class StructuringResults  extends AuditModel {
 
 
     @NotNull
-    private long effectiveAnnualRate;
+    private double effectiveAnnualRate;
 
 
     @NotNull
-    private long effectiveRate;
+    private double effectiveRate;
 
 
     @NotNull
-    private long COK;
+    private double COK;
 
 
     @NotNull
-    private long InitialCostsEmitter;
+    private double InitialCostsEmitter;
 
     @NotNull
-    private long InitialCostsBondholder;
+    private double InitialCostsBondholder;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(

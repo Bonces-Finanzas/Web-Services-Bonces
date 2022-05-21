@@ -1,8 +1,10 @@
 package com.bonces.webservicesbonces.schedule.domain.model.entity;
 
 import com.bonces.webservicesbonces.quota.domain.model.entity.Quota;
+import com.bonces.webservicesbonces.results.domain.model.entity.ProfitabilityResults;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfCurrentPriceAndProfit;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfDecisionRatio;
+import com.bonces.webservicesbonces.results.domain.model.entity.StructuringResults;
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
 import com.bonces.webservicesbonces.users.domain.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,5 +63,22 @@ public class Schedule extends AuditModel {
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
+
     private ResultsOfDecisionRatio resultsOfDecisionRatio;
+
+    @OneToOne(
+            targetEntity = ProfitabilityResults.class,
+            mappedBy = "schedule",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private ProfitabilityResults profitabilityResults;
+
+    @OneToOne(
+            targetEntity = StructuringResults.class,
+            mappedBy = "schedule",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private StructuringResults structuringResults;
 }
