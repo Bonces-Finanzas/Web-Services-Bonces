@@ -7,7 +7,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,7 +36,7 @@ public class InitialCostData extends AuditModel {
     @NotNull
     private Double cavali;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "schedule_id",
             referencedColumnName = "id",
