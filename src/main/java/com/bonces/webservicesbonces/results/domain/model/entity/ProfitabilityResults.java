@@ -28,7 +28,7 @@ public class ProfitabilityResults extends AuditModel {
     private double emitterTceaWithShield;
 
     @NotNull
-    private double bondholderTrea ;
+    private double bondHolderTrea ;
 
     @NotNull
     private double emitterTirTcea;
