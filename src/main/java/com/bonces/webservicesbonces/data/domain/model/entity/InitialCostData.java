@@ -31,7 +31,7 @@ public class InitialCostData extends AuditModel {
     private Double collocation;
 
     @NotNull
-    private String floatation;
+    private Double floatation;
 
     @NotNull
     private Double cavali;

@@ -1,5 +1,9 @@
 package com.bonces.webservicesbonces.data.domain.model.entity;
 
+import com.bonces.webservicesbonces.data.domain.model.enums.Capitalization;
+import com.bonces.webservicesbonces.data.domain.model.enums.CouponFrequency;
+import com.bonces.webservicesbonces.data.domain.model.enums.TypeInterestRate;
+import com.bonces.webservicesbonces.quota.domain.model.enums.TypeOfGracePeriod;
 import com.bonces.webservicesbonces.schedule.domain.model.entity.Schedule;
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,19 +33,22 @@ public class BoundData extends AuditModel {
     private Double commercialValue;
 
     @NotNull
-    private Double years;
+    private int years;
 
     @NotNull
-    private String couponFrequency;
+    @Enumerated(value = EnumType.STRING)
+    private CouponFrequency couponFrequency;
 
     @NotNull
-    private Double daysYear;
+    private int daysYear;
 
     @NotNull
-    private String typeInterestRate;
+    @Enumerated(value = EnumType.STRING)
+    private TypeInterestRate typeInterestRate;
 
     @NotNull
-    private String capitalization;
+    @Enumerated(value = EnumType.STRING)
+    private Capitalization capitalization;
 
     @NotNull
     private Double interestRate;
@@ -56,10 +63,10 @@ public class BoundData extends AuditModel {
     private Date issue;
 
     @NotNull
-    private Double gracePeriod;
+    private Long gracePeriod;
 
     @NotNull
-    private String termType;
+    private TypeOfGracePeriod typeOfGracePeriod;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
