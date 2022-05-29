@@ -29,4 +29,5 @@ public class ScheduleResource {
     private ProfitabilityResults profitabilityResults;
     private StructuringResults structuringResults;
     private InitialCostData initialCostData;
+
 }
