@@ -11,10 +11,6 @@ import javax.validation.constraints.NotNull;
 public class ResultsOfCurrentPriceAndProfitResource {
 
     private Long id;
-
-    @NotNull
     private Double currentPrice;
-
-    @NotNull
     private Double lostProfit;
 }

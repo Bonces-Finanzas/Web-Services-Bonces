@@ -10,16 +10,8 @@ import javax.validation.constraints.NotNull;
 public class ResultsOfDecisionRatioResource {
 
     private Long id;
-
-    @NotNull
     private Double duration;
-
-    @NotNull
     private Double convexity;
-
-    @NotNull
     private Double total;
-
-    @NotNull
     private Double modifiedDuration;
 }
