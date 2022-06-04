@@ -28,7 +28,7 @@ public class ResultsOfCurrentPriceAndProfit extends AuditModel {
     @NotNull
     private Double lostProfit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "schedule_id",
             referencedColumnName = "id",
@@ -36,5 +36,4 @@ public class ResultsOfCurrentPriceAndProfit extends AuditModel {
     )
     @JsonIgnore
     private Schedule schedule;
-
 }

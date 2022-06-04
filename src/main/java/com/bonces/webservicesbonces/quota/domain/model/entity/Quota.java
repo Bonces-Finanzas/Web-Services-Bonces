@@ -1,5 +1,6 @@
 package com.bonces.webservicesbonces.quota.domain.model.entity;
 
+import com.bonces.webservicesbonces.quota.domain.model.enums.TypeOfGracePeriod;
 import com.bonces.webservicesbonces.schedule.domain.model.entity.Schedule;
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,13 +27,8 @@ public class Quota extends AuditModel {
     private Date scheduledDate;
 
     @NotNull
-    private Double annualInflation;
-
-    @NotNull
-    private Double semiAnnualInflation;
-
-    @NotNull
-    private Double gracePeriod;
+    @Enumerated(value = EnumType.STRING)
+    private TypeOfGracePeriod typeOfGracePeriod;
 
     @NotNull
     private Double bond;
@@ -63,6 +59,9 @@ public class Quota extends AuditModel {
 
     @NotNull
     private Double boundHolderFlow;
+
+    @NotNull
+    private Double currentFlow;
 
     @NotNull
     private Double currentFlowPerPeriod;
