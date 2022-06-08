@@ -67,6 +67,7 @@ public class BoundData extends AuditModel {
             referencedColumnName = "id",
             nullable = false
     )
+
     @JsonIgnore
     private Schedule schedule;
 }
