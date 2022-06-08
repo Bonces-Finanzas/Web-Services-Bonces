@@ -1,8 +1,8 @@
 package com.bonces.webservicesbonces.users.resource.create;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.*;
+
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -10,10 +10,6 @@ import lombok.*;
 @Setter
 @With
 public class CreateUserResource {
-
-    @NotNull
-    private Long id;
-
     @NotNull
     private String name;
 

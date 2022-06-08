@@ -9,9 +9,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class UpdateUserResource {
     @NotNull
-    private Long id;
-
-    @NotNull
     private String name;
 
     @NotNull
