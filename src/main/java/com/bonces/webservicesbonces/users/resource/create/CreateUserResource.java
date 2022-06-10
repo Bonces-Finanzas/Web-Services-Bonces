@@ -21,5 +21,4 @@ public class CreateUserResource {
 
     @NotNull
     private String password;
-
 }
