@@ -7,7 +7,6 @@ import com.bonces.webservicesbonces.results.domain.model.entity.ProfitabilityRes
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfCurrentPriceAndProfit;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfDecisionRatio;
 import com.bonces.webservicesbonces.results.domain.model.entity.StructuringResults;
-import com.bonces.webservicesbonces.users.domain.model.entity.User;
 import lombok.*;
 
 import java.util.Date;
@@ -21,7 +20,6 @@ import java.util.Set;
 public class ScheduleResource {
     private Long id;
     private Date date;
-    private User user;
     private Set<Quota> quotas;
     private ResultsOfCurrentPriceAndProfit resultsOfCurrentPriceAndProfit;
     private ResultsOfDecisionRatio resultsOfDecisionRatio;
@@ -29,5 +27,5 @@ public class ScheduleResource {
     private ProfitabilityResults profitabilityResults;
     private StructuringResults structuringResults;
     private InitialCostData initialCostData;
-
+    private Long userId;
 }
