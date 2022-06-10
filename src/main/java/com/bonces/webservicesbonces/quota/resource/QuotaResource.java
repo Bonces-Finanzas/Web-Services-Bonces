@@ -1,6 +1,7 @@
 package com.bonces.webservicesbonces.quota.resource;
 
 import com.bonces.webservicesbonces.quota.domain.model.enums.TypeOfGracePeriod;
+import com.bonces.webservicesbonces.shared.resource.AuditModelResource;
 import lombok.*;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @With
-public class QuotaResource {
+public class QuotaResource extends AuditModelResource {
     private Long id;
     private Date scheduledDate;
     private TypeOfGracePeriod typeOfGracePeriod;

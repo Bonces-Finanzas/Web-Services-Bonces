@@ -1,5 +1,6 @@
 package com.bonces.webservicesbonces.results.resource;
 
+import com.bonces.webservicesbonces.shared.resource.AuditModelResource;
 import lombok.*;
 
 @NoArgsConstructor
@@ -7,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @With
-public class ProfitabilityResultsResource {
+public class ProfitabilityResultsResource extends AuditModelResource {
     private Long id;
     private double emitterTcea;
     private double emitterTceaWithShield;

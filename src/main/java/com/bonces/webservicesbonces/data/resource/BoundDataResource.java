@@ -1,5 +1,6 @@
 package com.bonces.webservicesbonces.data.resource;
 
+import com.bonces.webservicesbonces.shared.resource.AuditModelResource;
 import lombok.*;
 
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @With
-public class BoundDataResource {
+public class BoundDataResource extends AuditModelResource {
     private Long id;
     private Double nominalValue;
     private Double commercialValue;
