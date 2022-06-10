@@ -2,7 +2,6 @@ package com.bonces.webservicesbonces.users.domain.model.entity;
 
 import com.bonces.webservicesbonces.schedule.domain.model.entity.Schedule;
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -47,6 +46,5 @@ public class User extends AuditModel {
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
-    @JsonIgnore
     private Set<Schedule> schedules;
 }
