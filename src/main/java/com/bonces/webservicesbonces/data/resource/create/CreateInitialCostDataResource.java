@@ -20,7 +20,7 @@ public class CreateInitialCostDataResource {
     private Double collocation;
 
     @NotNull
-    private String floatation;
+    private Double floatation;
 
     @NotNull
     private Double cavali;

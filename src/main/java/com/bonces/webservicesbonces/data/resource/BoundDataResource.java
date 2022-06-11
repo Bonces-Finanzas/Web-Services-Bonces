@@ -1,5 +1,10 @@
 package com.bonces.webservicesbonces.data.resource;
 
+import com.bonces.webservicesbonces.data.domain.model.enums.Capitalization;
+import com.bonces.webservicesbonces.data.domain.model.enums.CouponFrequency;
+import com.bonces.webservicesbonces.data.domain.model.enums.TypeInterestRate;
+import com.bonces.webservicesbonces.quota.domain.model.enums.TypeOfGracePeriod;
+
 import lombok.*;
 
 import java.util.Date;
@@ -13,15 +18,15 @@ public class BoundDataResource {
     private Long id;
     private Double nominalValue;
     private Double commercialValue;
-    private Double years;
-    private String couponFrequency;
-    private Double daysYear;
-    private String typeInterestRate;
-    private String capitalization;
+    private int years;
+    private CouponFrequency couponFrequency;
+    private int daysYear;
+    private TypeInterestRate typeInterestRate;
+    private Capitalization capitalization;
     private Double interestRate;
     private Double annualDiscountRate;
     private Double incomeTax;
     private Date issue;
-    private Double gracePeriod;
-    private String termType;
+    private Long gracePeriod;
+    private TypeOfGracePeriod typeOfGracePeriod;
 }
