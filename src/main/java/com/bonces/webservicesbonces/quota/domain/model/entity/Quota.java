@@ -23,6 +23,9 @@ public class Quota extends AuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    private int numberOfQuota;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date scheduledDate;
 
