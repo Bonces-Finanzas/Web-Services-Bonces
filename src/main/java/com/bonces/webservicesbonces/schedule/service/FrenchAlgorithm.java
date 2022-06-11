@@ -10,6 +10,7 @@ import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfCurrent
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfDecisionRatio;
 import com.bonces.webservicesbonces.results.domain.model.entity.StructuringResults;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,9 +26,9 @@ public class FrenchAlgorithm {
     public ResultsOfCurrentPriceAndProfit resultsOfCurrentPriceAndProfit;
     public ProfitabilityResults profitabilityResults;
     public Set<Quota> quotas;
-    private Long gracePeriod;
-    private TypeOfGracePeriod typeOfGracePeriod;
-    private Date date;
+    private final Long gracePeriod;
+    private final TypeOfGracePeriod typeOfGracePeriod;
+    private final Date date;
 
     public FrenchAlgorithm(BoundData boundData, InitialCostData initialCostData, Date date) {
         this.boundData = boundData;
@@ -64,11 +65,11 @@ public class FrenchAlgorithm {
     }
 
     private double getEffectiveRate() {
-        return Math.pow(1 + getEffectiveAnnualRate(), boundData.getCouponFrequency().days / boundData.getDaysYear()) - 1;
+        return Math.pow(1 + getEffectiveAnnualRate(), (double) boundData.getCouponFrequency().days/ (double) boundData.getDaysYear()) - 1;
     }
 
     private double getCOK() {
-        return Math.pow(1 + boundData.getAnnualDiscountRate(), boundData.getCouponFrequency().days / boundData.getDaysYear()) - 1;
+        return Math.pow(1 + boundData.getAnnualDiscountRate(), (double) boundData.getCouponFrequency().days / (double) boundData.getDaysYear()) - 1;
     }
 
     private double getInitialCostsEmitter() {
@@ -89,7 +90,7 @@ public class FrenchAlgorithm {
     }
 
     private double calculateRateIndicatorProfitability(double tir) {
-        return Math.pow(tir + 1, boundData.getDaysYear() / boundData.getCouponFrequency().days) - 1;
+        return Math.pow(tir + 1, (double) boundData.getDaysYear() / (double) boundData.getCouponFrequency().days) - 1;
     }
 
     private double getFlowSummation(double[] flow, double rate, int periodsNumber) {
@@ -117,7 +118,7 @@ public class FrenchAlgorithm {
     private double getConvexity(double[] convexityFactor, double[] currentFlows) {
         return getFlowSummation(convexityFactor, getNumberOfPeriods())/
                 (Math.pow(1 + getCOK(), 2) * getFlowSummation(currentFlows, getNumberOfPeriods())
-                * Math.pow(boundData.getDaysYear() / boundData.getCouponFrequency().days, 2));
+                * Math.pow((double) boundData.getDaysYear() / (double) boundData.getCouponFrequency().days, 2));
     }
 
     private double getModifiedDuration(double duration) {
@@ -125,10 +126,10 @@ public class FrenchAlgorithm {
     }
 
     private double getTIR(double investment, double[] flow, double top, double precision) {
-        double left = 0, right = top, mit, tir;
+        double left = 0, right = top, mit;
 
         while (left < right - precision) {
-            mit = Math.round(((left + right) / 2) * 1000000) * 1000000;
+            mit = Math.round(((left + right) / 2.0) * 1000000.0) / 1000000.0;
             if (getFlowSummation(flow, mit, getNumberOfPeriods()) < Math.abs(investment))
                 right = mit - precision;
             else
@@ -160,7 +161,7 @@ public class FrenchAlgorithm {
             for (int i = 0; i < gracePeriod; i++) {
                 gracePeriods[i] = typeOfGracePeriod;
             }
-            for (int i = (int) (gracePeriod + 1); i < NUMBER_OF_PERIODS; i++) {
+            for (int i = gracePeriod.intValue(); i < NUMBER_OF_PERIODS; i++) {
                 gracePeriods[i] = TypeOfGracePeriod.S;
             }
         }
@@ -194,6 +195,9 @@ public class FrenchAlgorithm {
         double[] convexityFactor = new double[NUMBER_OF_PERIODS];
         TypeOfGracePeriod[] gracePeriods = initializeGracePeriod();
 
+        Date quotaDate = date;
+        Calendar calendar;
+
         for (int i = 1; i <= NUMBER_OF_PERIODS; i++) {
             if (i == 1) bounds[i - 1] = initialBound;
             else {
@@ -221,11 +225,17 @@ public class FrenchAlgorithm {
             emitterFlowWithShield[i - 1] = emitterStream[i - 1] + shield[i - 1];
             boundHolderFlow[i - 1] = -emitterStream[i - 1];
             currentFlow[i - 1] = boundHolderFlow[i - 1] / Math.pow(1 + getCOK(), i);
-            currentFlowPerPeriod[i - 1] = (currentFlow[i - 1] * i) * (double) (boundData.getCouponFrequency().days / boundData.getDaysYear());
+            currentFlowPerPeriod[i - 1] = (currentFlow[i - 1] * i) * (double) boundData.getCouponFrequency().days / (double) boundData.getDaysYear();
             convexityFactor[i - 1] = currentFlow[i - 1] * i * (i + 1);
 
+            calendar = Calendar.getInstance();
+            calendar.setTime(quotaDate);
+            calendar.add(Calendar.DATE, boundData.getCouponFrequency().days);
+            quotaDate = calendar.getTime();
+
             Quota newQuota = new Quota();
-            newQuota.setScheduledDate(date);
+            newQuota.setNumberOfQuota(i);
+            newQuota.setScheduledDate(quotaDate);
             newQuota.setTypeOfGracePeriod(gracePeriods[i - 1]);
             newQuota.setBond(bounds[i - 1]);
             newQuota.setIndexedBond(indexedBond[i - 1]);
@@ -250,7 +260,7 @@ public class FrenchAlgorithm {
 
         //Result of current price and profit
         double currentPrice = getFlowSummation(boundHolderFlow, getCOK(), NUMBER_OF_PERIODS);
-        double lostProfit = boundData.getCommercialValue() * (1 + (initialCostData.getFloatation() + initialCostData.getCavali()));
+        double lostProfit =  emitterStreamInitial + getFlowSummation(boundHolderFlow, getCOK(), NUMBER_OF_PERIODS);
         resultsOfCurrentPriceAndProfit.setCurrentPrice(currentPrice);
         resultsOfCurrentPriceAndProfit.setLostProfit(lostProfit);
 
@@ -272,7 +282,7 @@ public class FrenchAlgorithm {
         double emitterTceaWithShield = calculateRateIndicatorProfitability(emitterTirTceaWithShield);
         double bondholderTrea = calculateRateIndicatorProfitability(bondHolderTirTrea);
         profitabilityResults.setEmitterTirTcea(emitterTirTcea);
-        profitabilityResults.setEmitterTceaWithShield(emitterTirTceaWithShield);
+        profitabilityResults.setEmitterTirTceaWithShield(emitterTirTceaWithShield);
         profitabilityResults.setBondholderTirTrea(bondHolderTirTrea);
         profitabilityResults.setEmitterTcea(emitterTcea);
         profitabilityResults.setEmitterTceaWithShield(emitterTceaWithShield);

@@ -13,7 +13,6 @@ import java.util.Date;
 @Setter
 public class UpdateScheduleResource {
     @NotNull
-    @NotBlank
     private Date date;
 
     @NotNull
