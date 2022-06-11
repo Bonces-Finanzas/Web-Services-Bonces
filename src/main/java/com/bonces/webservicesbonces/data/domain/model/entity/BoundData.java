@@ -66,6 +66,7 @@ public class BoundData extends AuditModel {
     private Long gracePeriod;
 
     @NotNull
+    @Enumerated(value = EnumType.STRING)
     private TypeOfGracePeriod typeOfGracePeriod;
 
     @OneToOne(fetch = FetchType.LAZY)

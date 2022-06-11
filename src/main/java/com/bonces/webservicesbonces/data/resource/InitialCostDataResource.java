@@ -13,6 +13,6 @@ public class InitialCostDataResource extends AuditModelResource {
     private Double premium;
     private Double structuring;
     private Double collocation;
-    private String floatation;
+    private Double floatation;
     private Double cavali;
 }

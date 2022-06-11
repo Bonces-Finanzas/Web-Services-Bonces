@@ -1,7 +1,13 @@
 package com.bonces.webservicesbonces.data.resource.create;
 
+import com.bonces.webservicesbonces.data.domain.model.enums.Capitalization;
+import com.bonces.webservicesbonces.data.domain.model.enums.CouponFrequency;
+import com.bonces.webservicesbonces.data.domain.model.enums.TypeInterestRate;
+import com.bonces.webservicesbonces.quota.domain.model.enums.TypeOfGracePeriod;
 import lombok.*;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -18,19 +24,22 @@ public class CreateBoundDataResource {
     private Double commercialValue;
 
     @NotNull
-    private Double years;
+    private int years;
 
     @NotNull
-    private String couponFrequency;
+    @Enumerated(value = EnumType.STRING)
+    private CouponFrequency couponFrequency;
 
     @NotNull
-    private Double daysYear;
+    private int daysYear;
 
     @NotNull
-    private String typeInterestRate;
+    @Enumerated(value = EnumType.STRING)
+    private TypeInterestRate typeInterestRate;
 
     @NotNull
-    private String capitalization;
+    @Enumerated(value = EnumType.STRING)
+    private Capitalization capitalization;
 
     @NotNull
     private Double interestRate;
@@ -45,8 +54,9 @@ public class CreateBoundDataResource {
     private Date issue;
 
     @NotNull
-    private Double gracePeriod;
+    private Long gracePeriod;
 
     @NotNull
-    private String termType;
+    @Enumerated(value = EnumType.STRING)
+    private TypeOfGracePeriod typeOfGracePeriod;
 }
