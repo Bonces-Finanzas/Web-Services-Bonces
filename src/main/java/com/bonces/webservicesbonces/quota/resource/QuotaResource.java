@@ -3,6 +3,7 @@ package com.bonces.webservicesbonces.quota.resource;
 import com.bonces.webservicesbonces.quota.domain.model.enums.TypeOfGracePeriod;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -12,6 +13,7 @@ import java.util.Date;
 @With
 public class QuotaResource {
     private Long id;
+    private int numberOfQuota;
     private Date scheduledDate;
     private TypeOfGracePeriod typeOfGracePeriod;
     private Double bond;

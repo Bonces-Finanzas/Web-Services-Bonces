@@ -20,6 +20,9 @@ public class CreateQuotaResource {
     private Date scheduledDate;
 
     @NotNull
+    private int numberOfQuota;
+
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     private TypeOfGracePeriod typeOfGracePeriod;
 
