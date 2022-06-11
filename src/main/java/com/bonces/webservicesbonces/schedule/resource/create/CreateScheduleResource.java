@@ -15,7 +15,6 @@ import java.util.Date;
 @With
 public class CreateScheduleResource {
     @NotNull
-    @NotBlank
     private Date date;
 
     @NotNull
