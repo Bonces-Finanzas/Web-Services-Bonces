@@ -7,6 +7,8 @@ import com.bonces.webservicesbonces.results.domain.model.entity.ProfitabilityRes
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfCurrentPriceAndProfit;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfDecisionRatio;
 import com.bonces.webservicesbonces.results.domain.model.entity.StructuringResults;
+import com.bonces.webservicesbonces.schedule.domain.model.enums.CurrencyType;
+import com.bonces.webservicesbonces.schedule.domain.model.enums.MethodType;
 import com.bonces.webservicesbonces.shared.domain.model.entity.AuditModel;
 import com.bonces.webservicesbonces.users.domain.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -37,6 +40,14 @@ public class Schedule extends AuditModel {
     )
     @JsonIgnore
     private User user;
+
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private MethodType methodType;
+
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private CurrencyType currencyType;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(
