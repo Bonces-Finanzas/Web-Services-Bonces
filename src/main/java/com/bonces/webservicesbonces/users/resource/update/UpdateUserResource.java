@@ -16,7 +16,4 @@ public class UpdateUserResource {
 
     @NotNull
     private String email;
-
-    @NotNull
-    private String password;
 }

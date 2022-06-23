@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(Long userId, User request) {
+        User auxUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(ENTITY, userId));
+
+        request.setPassword(auxUser.getPassword());
+
         Set<ConstraintViolation<User>> violations = validator.validate(request);
 
         if (!violations.isEmpty())
