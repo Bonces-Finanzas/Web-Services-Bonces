@@ -9,13 +9,16 @@ import com.bonces.webservicesbonces.results.domain.model.entity.ProfitabilityRes
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfCurrentPriceAndProfit;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfDecisionRatio;
 import com.bonces.webservicesbonces.results.domain.model.entity.StructuringResults;
+import com.bonces.webservicesbonces.schedule.domain.model.enums.MethodType;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FrenchAlgorithm {
+public class PaymentPlanCalculation {
+    public MethodType methodType;
+
     //Data
     public BoundData boundData;
     public InitialCostData initialCostData;
@@ -30,7 +33,8 @@ public class FrenchAlgorithm {
     private final TypeOfGracePeriod typeOfGracePeriod;
     private final Date date;
 
-    public FrenchAlgorithm(BoundData boundData, InitialCostData initialCostData) {
+    public PaymentPlanCalculation(BoundData boundData, InitialCostData initialCostData, MethodType methodType) {
+        this.methodType = methodType;
         this.boundData = boundData;
         this.initialCostData = initialCostData;
         this.gracePeriod = boundData.getGracePeriod();
@@ -208,14 +212,33 @@ public class FrenchAlgorithm {
             indexedBond[i - 1] = bounds[i - 1];
             coupon[i - 1] = -indexedBond[i - 1] * structuringResults.getEffectiveRate();
 
-            if (gracePeriods[i - 1] == TypeOfGracePeriod.T) quota[i - 1] = 0;
-            else {
-                if (gracePeriods[i - 1] == TypeOfGracePeriod.P) quota[i - 1] = coupon[i - 1];
-                else quota[i - 1] = calculateQuota(indexedBond[i - 1],NUMBER_OF_PERIODS - i + 1);
-            }
+            switch (methodType) {
+                case FRENCH -> {
+                    if (gracePeriods[i - 1] == TypeOfGracePeriod.T) quota[i - 1] = 0;
+                    else if (gracePeriods[i - 1] == TypeOfGracePeriod.P) quota[i - 1] = coupon[i - 1];
+                    else quota[i - 1] = calculateQuota(indexedBond[i - 1], NUMBER_OF_PERIODS - i + 1);
 
-            if (gracePeriods[i - 1] == TypeOfGracePeriod.T || gracePeriods[i - 1] == TypeOfGracePeriod.P) amortization[i - 1] = 0;
-            else amortization[i - 1] = quota[i - 1]-coupon[i - 1];
+                    if (gracePeriods[i - 1] == TypeOfGracePeriod.T || gracePeriods[i - 1] == TypeOfGracePeriod.P)
+                        amortization[i - 1] = 0;
+                    else amortization[i - 1] = quota[i - 1] - coupon[i - 1];
+                }
+                case AMERICAN -> {
+                    if (i == NUMBER_OF_PERIODS) amortization[i - 1] = -indexedBond[i - 1];
+                    else amortization[i - 1] = 0;
+
+                    if (gracePeriods[i - 1] == TypeOfGracePeriod.T) quota[i - 1] = 0;
+                    else quota[i - 1] = coupon[i - 1] + amortization[i - 1];
+                }
+                case GERMAN -> {
+                    if (gracePeriods[i - 1] == TypeOfGracePeriod.T || gracePeriods[i - 1] == TypeOfGracePeriod.P)
+                        amortization[i - 1] = 0;
+                    else amortization[i - 1] = -indexedBond[i - 1] / (NUMBER_OF_PERIODS - i + 1);
+
+                    if (gracePeriods[i - 1] == TypeOfGracePeriod.T) quota[i - 1] = 0;
+                    else if (gracePeriods[i - 1] == TypeOfGracePeriod.P) quota[i - 1] = coupon[i - 1];
+                    else quota[i - 1] = coupon[i - 1] + amortization[i - 1];
+                }
+            }
 
             if (i == NUMBER_OF_PERIODS) premium[i - 1] = -indexedBond[i - 1] * initialCostData.getPremium();
             else premium[i - 1] = 0;

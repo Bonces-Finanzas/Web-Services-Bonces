@@ -75,20 +75,20 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        FrenchAlgorithm frenchAlgorithm = new FrenchAlgorithm(request.getBoundData(), request.getInitialCostData());
+        PaymentPlanCalculation paymentPlanCalculation = new PaymentPlanCalculation(request.getBoundData(), request.getInitialCostData(), request.getMethodType());
 
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", userId));
 
         Schedule schedule = new Schedule();
-        schedule = scheduleRepository.save(schedule.withUser(user));
+        schedule = scheduleRepository.save(schedule.withUser(user).withMethodType(request.getMethodType()).withCurrencyType(request.getCurrencyType()));
 
-        BoundData boundData = boundDataService.createBoundData(schedule.getId(), frenchAlgorithm.boundData);
-        InitialCostData initialCostData = initialCostDataService.createInitialCostData(schedule.getId(), frenchAlgorithm.initialCostData);
-        StructuringResults structuringResults = structuringResultsService.createStructuringResults(schedule.getId(), frenchAlgorithm.structuringResults);
-        ResultsOfCurrentPriceAndProfit resultsOfCurrentPriceAndProfit = resultsOfCurrentPriceAndProfitService.createResultsOfCurrentPriceAndProfit(schedule.getId(), frenchAlgorithm.resultsOfCurrentPriceAndProfit);
-        ResultsOfDecisionRatio resultsOfDecisionRatio = resultsOfDecisionRatioService.createResultsOfDecisionRatio(schedule.getId(), frenchAlgorithm.resultsOfDecisionRatio);
-        ProfitabilityResults profitabilityResults = profitabilityResultsService.createProfitabilityResults(schedule.getId(), frenchAlgorithm.profitabilityResults);
-        Set<Quota> quotas = quotaService.createQuotas(schedule.getId(), frenchAlgorithm.quotas);
+        BoundData boundData = boundDataService.createBoundData(schedule.getId(), paymentPlanCalculation.boundData);
+        InitialCostData initialCostData = initialCostDataService.createInitialCostData(schedule.getId(), paymentPlanCalculation.initialCostData);
+        StructuringResults structuringResults = structuringResultsService.createStructuringResults(schedule.getId(), paymentPlanCalculation.structuringResults);
+        ResultsOfCurrentPriceAndProfit resultsOfCurrentPriceAndProfit = resultsOfCurrentPriceAndProfitService.createResultsOfCurrentPriceAndProfit(schedule.getId(), paymentPlanCalculation.resultsOfCurrentPriceAndProfit);
+        ResultsOfDecisionRatio resultsOfDecisionRatio = resultsOfDecisionRatioService.createResultsOfDecisionRatio(schedule.getId(), paymentPlanCalculation.resultsOfDecisionRatio);
+        ProfitabilityResults profitabilityResults = profitabilityResultsService.createProfitabilityResults(schedule.getId(), paymentPlanCalculation.profitabilityResults);
+        Set<Quota> quotas = quotaService.createQuotas(schedule.getId(), paymentPlanCalculation.quotas);
 
         schedule.setBoundData(boundData);
         schedule.setInitialCostData(initialCostData);
@@ -109,16 +109,18 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new ResourceValidationException(ENTITY, violations);
 
         return scheduleRepository.findById(scheduleId).map(schedule -> {
-            FrenchAlgorithm frenchAlgorithm = new FrenchAlgorithm(request.getBoundData(), request.getInitialCostData());
+            PaymentPlanCalculation paymentPlanCalculation = new PaymentPlanCalculation(request.getBoundData(), request.getInitialCostData(), request.getMethodType());
 
-            BoundData boundData = boundDataService.updateBoundData(schedule.getId(), frenchAlgorithm.boundData);
-            InitialCostData initialCostData = initialCostDataService.updateInitialCostData(schedule.getId(), frenchAlgorithm.initialCostData);
-            StructuringResults structuringResults = structuringResultsService.updateStructuringResults(schedule.getId(), frenchAlgorithm.structuringResults);
-            ResultsOfCurrentPriceAndProfit resultsOfCurrentPriceAndProfit = resultsOfCurrentPriceAndProfitService.updateResultsOfCurrentPriceAndProfit(schedule.getId(), frenchAlgorithm.resultsOfCurrentPriceAndProfit);
-            ResultsOfDecisionRatio resultsOfDecisionRatio = resultsOfDecisionRatioService.updateResultsOfDecisionRatio(schedule.getId(), frenchAlgorithm.resultsOfDecisionRatio);
-            ProfitabilityResults profitabilityResults = profitabilityResultsService.updateProfitabilityResults(schedule.getId(), frenchAlgorithm.profitabilityResults);
-            Set<Quota> quotas = quotaService.updateQuotas(schedule.getId(), frenchAlgorithm.quotas);
+            BoundData boundData = boundDataService.updateBoundData(schedule.getId(), paymentPlanCalculation.boundData);
+            InitialCostData initialCostData = initialCostDataService.updateInitialCostData(schedule.getId(), paymentPlanCalculation.initialCostData);
+            StructuringResults structuringResults = structuringResultsService.updateStructuringResults(schedule.getId(), paymentPlanCalculation.structuringResults);
+            ResultsOfCurrentPriceAndProfit resultsOfCurrentPriceAndProfit = resultsOfCurrentPriceAndProfitService.updateResultsOfCurrentPriceAndProfit(schedule.getId(), paymentPlanCalculation.resultsOfCurrentPriceAndProfit);
+            ResultsOfDecisionRatio resultsOfDecisionRatio = resultsOfDecisionRatioService.updateResultsOfDecisionRatio(schedule.getId(), paymentPlanCalculation.resultsOfDecisionRatio);
+            ProfitabilityResults profitabilityResults = profitabilityResultsService.updateProfitabilityResults(schedule.getId(), paymentPlanCalculation.profitabilityResults);
+            Set<Quota> quotas = quotaService.updateQuotas(schedule.getId(), paymentPlanCalculation.quotas);
 
+            schedule.setMethodType(request.getMethodType());
+            schedule.setCurrencyType(request.getCurrencyType());
             schedule.setBoundData(boundData);
             schedule.setInitialCostData(initialCostData);
             schedule.setStructuringResults(structuringResults);
