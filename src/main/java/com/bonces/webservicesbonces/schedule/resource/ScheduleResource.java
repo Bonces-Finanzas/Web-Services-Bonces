@@ -10,7 +10,6 @@ import com.bonces.webservicesbonces.results.domain.model.entity.StructuringResul
 import com.bonces.webservicesbonces.shared.resource.AuditModelResource;
 import lombok.*;
 
-import java.util.Date;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -20,7 +19,6 @@ import java.util.Set;
 @With
 public class ScheduleResource extends AuditModelResource {
     private Long id;
-    private Date date;
     private Set<Quota> quotas;
     private ResultsOfCurrentPriceAndProfit resultsOfCurrentPriceAndProfit;
     private ResultsOfDecisionRatio resultsOfDecisionRatio;

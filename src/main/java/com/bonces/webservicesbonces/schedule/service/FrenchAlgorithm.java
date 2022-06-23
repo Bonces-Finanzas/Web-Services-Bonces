@@ -30,7 +30,7 @@ public class FrenchAlgorithm {
     private final TypeOfGracePeriod typeOfGracePeriod;
     private final Date date;
 
-    public FrenchAlgorithm(BoundData boundData, InitialCostData initialCostData, Date date) {
+    public FrenchAlgorithm(BoundData boundData, InitialCostData initialCostData) {
         this.boundData = boundData;
         this.initialCostData = initialCostData;
         this.gracePeriod = boundData.getGracePeriod();
@@ -38,7 +38,7 @@ public class FrenchAlgorithm {
         this.resultsOfDecisionRatio = new ResultsOfDecisionRatio();
         this.resultsOfCurrentPriceAndProfit = new ResultsOfCurrentPriceAndProfit();
         this.profitabilityResults = new ProfitabilityResults();
-        this.date = date;
+        this.date = boundData.getIssue();
         this.quotas = new HashSet<>();
         execute();
     }

@@ -2,21 +2,14 @@ package com.bonces.webservicesbonces.schedule.service;
 
 import com.bonces.webservicesbonces.data.domain.model.entity.BoundData;
 import com.bonces.webservicesbonces.data.domain.model.entity.InitialCostData;
-import com.bonces.webservicesbonces.data.domain.persistence.BoundDataRepository;
-import com.bonces.webservicesbonces.data.domain.persistence.InitialCostDataRepository;
 import com.bonces.webservicesbonces.data.domain.service.BoundDataService;
 import com.bonces.webservicesbonces.data.domain.service.InitialCostDataService;
 import com.bonces.webservicesbonces.quota.domain.model.entity.Quota;
-import com.bonces.webservicesbonces.quota.domain.persistence.QuotaRepository;
 import com.bonces.webservicesbonces.quota.domain.service.QuotaService;
 import com.bonces.webservicesbonces.results.domain.model.entity.ProfitabilityResults;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfCurrentPriceAndProfit;
 import com.bonces.webservicesbonces.results.domain.model.entity.ResultsOfDecisionRatio;
 import com.bonces.webservicesbonces.results.domain.model.entity.StructuringResults;
-import com.bonces.webservicesbonces.results.domain.persistence.ProfitabilityResultsRepository;
-import com.bonces.webservicesbonces.results.domain.persistence.ResultsOfCurrentPriceAndProfitRepository;
-import com.bonces.webservicesbonces.results.domain.persistence.ResultsOfDecisionRatioRepository;
-import com.bonces.webservicesbonces.results.domain.persistence.StructuringResultsRepository;
 import com.bonces.webservicesbonces.results.domain.service.ProfitabilityResultsService;
 import com.bonces.webservicesbonces.results.domain.service.ResultsOfCurrentPriceAndProfitService;
 import com.bonces.webservicesbonces.results.domain.service.ResultsOfDecisionRatioService;
@@ -40,13 +33,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     private static final String ENTITY = "Schedule";
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
-    private final BoundDataRepository boundDataRepository;
-    private final InitialCostDataRepository initialCostDataRepository;
-    private final StructuringResultsRepository structuringResultsRepository;
-    private final ResultsOfCurrentPriceAndProfitRepository resultsOfCurrentPriceAndProfitRepository;
-    private final ResultsOfDecisionRatioRepository resultsOfDecisionRatioRepository;
-    private final ProfitabilityResultsRepository profitabilityResultsRepository;
-    private final QuotaRepository quotaRepository;
     private final Validator validator;
 
     private final BoundDataService boundDataService;
@@ -58,11 +44,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final QuotaService quotaService;
 
     public ScheduleServiceImpl(ScheduleRepository scheduleRepository, UserRepository userRepository,
-                               BoundDataRepository boundDataRepository, InitialCostDataRepository initialCostDataRepository,
-                               StructuringResultsRepository structuringResultsRepository,
-                               ResultsOfCurrentPriceAndProfitRepository resultsOfCurrentPriceAndProfitRepository,
-                               ResultsOfDecisionRatioRepository resultsOfDecisionRatioRepository,
-                               ProfitabilityResultsRepository profitabilityResultsRepository, QuotaRepository quotaRepository,
                                Validator validator, BoundDataService boundDataService, InitialCostDataService initialCostDataService,
                                StructuringResultsService structuringResultsService,
                                ResultsOfCurrentPriceAndProfitService resultsOfCurrentPriceAndProfitService,
@@ -70,13 +51,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                                ProfitabilityResultsService profitabilityResultsService, QuotaService quotaService) {
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
-        this.boundDataRepository = boundDataRepository;
-        this.initialCostDataRepository = initialCostDataRepository;
-        this.structuringResultsRepository = structuringResultsRepository;
-        this.resultsOfCurrentPriceAndProfitRepository = resultsOfCurrentPriceAndProfitRepository;
-        this.resultsOfDecisionRatioRepository = resultsOfDecisionRatioRepository;
-        this.profitabilityResultsRepository = profitabilityResultsRepository;
-        this.quotaRepository = quotaRepository;
         this.validator = validator;
 
         this.boundDataService = boundDataService;
@@ -101,12 +75,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (!violations.isEmpty())
             throw new ResourceValidationException(ENTITY, violations);
 
-        FrenchAlgorithm frenchAlgorithm = new FrenchAlgorithm(request.getBoundData(), request.getInitialCostData(), request.getDate());
+        FrenchAlgorithm frenchAlgorithm = new FrenchAlgorithm(request.getBoundData(), request.getInitialCostData());
 
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", userId));
 
         Schedule schedule = new Schedule();
-        schedule = scheduleRepository.save(schedule.withUser(user).withDate(request.getDate()));
+        schedule = scheduleRepository.save(schedule.withUser(user));
 
         BoundData boundData = boundDataService.createBoundData(schedule.getId(), frenchAlgorithm.boundData);
         InitialCostData initialCostData = initialCostDataService.createInitialCostData(schedule.getId(), frenchAlgorithm.initialCostData);
@@ -135,7 +109,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new ResourceValidationException(ENTITY, violations);
 
         return scheduleRepository.findById(scheduleId).map(schedule -> {
-            FrenchAlgorithm frenchAlgorithm = new FrenchAlgorithm(request.getBoundData(), request.getInitialCostData(), request.getDate());
+            FrenchAlgorithm frenchAlgorithm = new FrenchAlgorithm(request.getBoundData(), request.getInitialCostData());
 
             BoundData boundData = boundDataService.updateBoundData(schedule.getId(), frenchAlgorithm.boundData);
             InitialCostData initialCostData = initialCostDataService.updateInitialCostData(schedule.getId(), frenchAlgorithm.initialCostData);
@@ -145,7 +119,6 @@ public class ScheduleServiceImpl implements ScheduleService {
             ProfitabilityResults profitabilityResults = profitabilityResultsService.updateProfitabilityResults(schedule.getId(), frenchAlgorithm.profitabilityResults);
             Set<Quota> quotas = quotaService.updateQuotas(schedule.getId(), frenchAlgorithm.quotas);
 
-            schedule.setDate(request.getDate());
             schedule.setBoundData(boundData);
             schedule.setInitialCostData(initialCostData);
             schedule.setStructuringResults(structuringResults);

@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -29,9 +28,6 @@ public class Schedule extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
