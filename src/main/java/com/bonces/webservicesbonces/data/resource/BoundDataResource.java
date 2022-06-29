@@ -30,4 +30,5 @@ public class BoundDataResource extends AuditModelResource {
     private Date issue;
     private Long gracePeriod;
     private TypeOfGracePeriod typeOfGracePeriod;
+    private Double inflation;
 }

@@ -23,6 +23,12 @@ public class CreateQuotaResource {
     private int numberOfQuota;
 
     @NotNull
+    private Double inflation;
+
+    @NotNull
+    private Double periodInflation;
+
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     private TypeOfGracePeriod typeOfGracePeriod;
 

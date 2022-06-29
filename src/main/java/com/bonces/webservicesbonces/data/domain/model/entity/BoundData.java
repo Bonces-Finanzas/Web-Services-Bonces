@@ -69,13 +69,15 @@ public class BoundData extends AuditModel {
     @Enumerated(value = EnumType.STRING)
     private TypeOfGracePeriod typeOfGracePeriod;
 
+    @NotNull
+    private Double inflation;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "schedule_id",
             referencedColumnName = "id",
             nullable = false
     )
-
     @JsonIgnore
     private Schedule schedule;
 }

@@ -4,7 +4,6 @@ import com.bonces.webservicesbonces.quota.domain.model.enums.TypeOfGracePeriod;
 import com.bonces.webservicesbonces.shared.resource.AuditModelResource;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -16,6 +15,8 @@ public class QuotaResource extends AuditModelResource {
     private Long id;
     private int numberOfQuota;
     private Date scheduledDate;
+    private Double inflation;
+    private Double periodInflation;
     private TypeOfGracePeriod typeOfGracePeriod;
     private Double bond;
     private Double indexedBond;
