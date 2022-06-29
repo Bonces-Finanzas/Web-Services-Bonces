@@ -30,6 +30,12 @@ public class Quota extends AuditModel {
     private Date scheduledDate;
 
     @NotNull
+    private Double inflation;
+
+    @NotNull
+    private Double periodInflation;
+
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     private TypeOfGracePeriod typeOfGracePeriod;
 
