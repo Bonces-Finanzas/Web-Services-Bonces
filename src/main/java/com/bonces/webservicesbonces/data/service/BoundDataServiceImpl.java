@@ -60,8 +60,8 @@ public class BoundDataServiceImpl implements BoundDataService {
                         .withIncomeTax(request.getIncomeTax())
                         .withIssue(request.getIssue())
                         .withGracePeriod(request.getGracePeriod())
-                        .withTypeOfGracePeriod(request.getTypeOfGracePeriod()))
-                        .withInflation(request.getInflation())
+                        .withTypeOfGracePeriod(request.getTypeOfGracePeriod())
+                        .withInflation(request.getInflation()))
         ).orElseThrow(() -> new ResourceNotFoundException(ENTITY, scheduleId));
     }
 }
