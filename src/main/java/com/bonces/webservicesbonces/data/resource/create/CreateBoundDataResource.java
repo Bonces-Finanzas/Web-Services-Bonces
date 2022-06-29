@@ -59,4 +59,7 @@ public class CreateBoundDataResource {
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private TypeOfGracePeriod typeOfGracePeriod;
+
+    @NotNull
+    private Double inflation;
 }

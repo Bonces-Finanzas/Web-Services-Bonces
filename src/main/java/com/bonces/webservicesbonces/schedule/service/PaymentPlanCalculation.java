@@ -178,12 +178,36 @@ public class PaymentPlanCalculation {
         return gracePeriods;
     }
 
+    private double[] initializeInflation() {
+        final int NUMBER_OF_PERIODS = getNumberOfPeriods();
+        double[] inflation = new double[NUMBER_OF_PERIODS];
+
+        for (int i = 0; i < NUMBER_OF_PERIODS; i++) {
+            inflation[i] = boundData.getInflation();
+        }
+
+        return inflation;
+    }
+
+    private double[] initializePeriodInflation(double[] inflation) {
+        final int NUMBER_OF_PERIODS = getNumberOfPeriods();
+        double[] periodInflation = new double[NUMBER_OF_PERIODS];
+
+        for (int i = 0; i < NUMBER_OF_PERIODS; i++) {
+            periodInflation[i] = Math.pow(1 + inflation[i], (double) structuringResults.getCouponFrequencyDays() / (double) boundData.getDaysYear()) - 1;
+        }
+
+        return periodInflation;
+    }
+
     private void calculatedPaymentSchedule() {
         calculatedStructuringResults();
 
         final int NUMBER_OF_PERIODS = getNumberOfPeriods();
 
         double initialBound = boundData.getNominalValue();
+        double[] inflation = initializeInflation();
+        double[] periodInflation = initializePeriodInflation(inflation);
         double[] bounds = new double[NUMBER_OF_PERIODS];
         double[] indexedBond = new double[NUMBER_OF_PERIODS];
         double[] coupon = new double[NUMBER_OF_PERIODS];
@@ -209,7 +233,7 @@ public class PaymentPlanCalculation {
                 else bounds[i - 1] = indexedBond[i - 2] + amortization[i - 2];
             }
 
-            indexedBond[i - 1] = bounds[i - 1];
+            indexedBond[i - 1] = bounds[i - 1] * (1 + periodInflation[i - 1]);
             coupon[i - 1] = -indexedBond[i - 1] * structuringResults.getEffectiveRate();
 
             switch (methodType) {
@@ -259,6 +283,8 @@ public class PaymentPlanCalculation {
             Quota newQuota = new Quota();
             newQuota.setNumberOfQuota(i);
             newQuota.setScheduledDate(quotaDate);
+            newQuota.setInflation(inflation[i - 1]);
+            newQuota.setPeriodInflation(periodInflation[i - 1]);
             newQuota.setTypeOfGracePeriod(gracePeriods[i - 1]);
             newQuota.setBond(bounds[i - 1]);
             newQuota.setIndexedBond(indexedBond[i - 1]);
